@@ -1,4 +1,4 @@
-module.exports = ObjectToArray = (ObjectArray) => {
+module.exports = function ObjectToArray  (ObjectArray) {
     let aux = []    
     ObjectArray.map((obj) => {
         // console.log(Object.values(obj))
