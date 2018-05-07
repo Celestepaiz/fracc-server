@@ -1,0 +1,1 @@
+CREATE TABLE Reservations (id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY, titulo VARCHAR(30) NOT NULL, descripcion VARCHAR(30) NOT NULL, fecha_inicio DATE, fecha_fin DATE, hora_inicio TIME,hora_fin TIME, id_user VARCHAR(24), updatedAt DATETIME, createdAt DATETIME);

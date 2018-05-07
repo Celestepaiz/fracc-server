@@ -1,0 +1,80 @@
+-------------------------------------------- CONSTRAINTS , NULL CLAUSE, AUTO INCREMENT, CHECK
+create table Access(id SERIAL primary key not null, modelo integer, marca varchar(20), placa varchar(7) not null,codigo varchar(10) not null, id_user varchar(24));
+
+create table Accesses(id SERIAL primary key not null, modelo integer, marca varchar(20), placa varchar(7) not null,codigo varchar(10) not null, createdAt timestamp, updatedAt timestamp, id_user varchar(24));
+
+
+
+createdAt\",\"updatedAt
+
+
+create table Payments(id SERIAL primary key not null, folio varchar(7), fecha_mant date, calle varchar(20), numero integer, concepto text, monto numeric(5,2), fecha_pago timestamp,  id_user varchar(24));
+
+
+INSERT INTO Payments (folio, fecha_mant, calle, numero, concepto, monto, fecha_pago, id_user) VALUES ('9876543', '2018-9-9', 'Asturias', 22, 'Cuota mensual',  100.00, CURRENT_TIMESTAMP, '5aea8f3787077154d5972e5c');
+
+create table Maintenance(id SERIAL primary key not null, concepto text, monto numeric(5,2), fecha_limite date,  id_user varchar(24));
+
+//fecha limite es la fecha limite en que se debia hacer el pago anteriormente
+create table multas(id int primary key not null, fecha_multa date, concepto text, fecha_limite date CHECK (fecha_limite < fecha_multa), monto numeric(5,2),  id_user varchar(24));
+
+
+
+*****************************************************************
+*****************************************************************
+create table reportes(id SERIAL primary key not null, concepto text, fecha_reporte date, monto float,  id_user varchar(24));
+
+
+
+-------------------------------------------- STORED PROCEDURES/FUNCTIONS
+
+//Funcion del trigger pagos
+CREATE OR REPLACE FUNCTION registroPayments() RETURNS TRIGGER AS $example_table$
+  DECLARE
+    fecha date;
+    mon float;
+   BEGIN
+   SELECT p.fecha_pago INTO fecha FROM Payments as p ORDER BY p.id DESC LIMIT 1;
+   SELECT p.monto INTO mon FROM Payments as p ORDER BY p.id DESC LIMIT 1;
+      INSERT INTO reportes(concepto, fecha_reporte, monto) VALUES ('pago' , fecha, mon);
+      RETURN NEW;
+   END;
+$example_table$ LANGUAGE plpgsql;
+
+
+//Funcion del trigger multas
+CREATE OR REPLACE FUNCTION registroM() RETURNS TRIGGER AS $example_table$
+  DECLARE
+    fecha date;
+    mon float;
+   BEGIN
+   SELECT p.fecha_multa INTO fecha FROM multas as p ORDER BY p.id DESC LIMIT 1;
+   SELECT p.monto INTO mon FROM multas as p ORDER BY p.id DESC LIMIT 1;
+      INSERT INTO reportes(concepto, fecha_reporte, monto) VALUES ('multa' , fecha, mon);
+      RETURN NEW;
+   END;
+$example_table$ LANGUAGE plpgsql;
+
+
+**********************************************************
+-------------------------------------------- VIEWS
+
+CREATE VIEW reporte_pagos AS
+SELECT id, concepto, fecha_reporte, monto
+FROM reportes;
+
+SELECT * FROM reporte_pagos;
+
+
+-------------------------------------------- TRANSACTIONS
+
+BEGIN;
+INSERT INTO chips_Autos (codigo, auto, modelo, placa) VALUES ('MCN48DJE93', 'A1', 2017, 'CIE3833');
+INSERT INTO pagos (concepto, monto, fecha_pago, fecha_limite, folio) VALUES ('Cuota mensual', 500, '2017-3-12', '2018-4-12', '1112223');
+COMMIT;
+
+
+BEGIN;
+DELETE FROM multas WHERE monto > 200;
+ROLLBACK;
+
