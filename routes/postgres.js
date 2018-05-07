@@ -20,7 +20,6 @@ router.post('/access', (req,res) => {
         codigo: req.body.codigo,
         id_user: req.body.id_user
     })
-
     access.save().then(function(newAccess){
         res.status(200).json({
             message: "ok"
@@ -38,10 +37,10 @@ router.get('/all-access', (req,res) => {
     })
 })
 
-router.get('/access/:id_user', (req, res) => {
+router.get('/access/:codigo', (req, res) => {
     models.access.findAll({
         where:{
-            id_user: req.params.id_user
+            codigo: req.params.codigo
         }
     }).then((registro) => {
         res.status(200).json({
@@ -65,27 +64,16 @@ router.delete('/access/:codigo', (req, res) => {
 
 
 router.put('/access/:codigo', (req, res) => {
-    const access = models.access.update({
-        modelo: req.body.modelo,
-        marca: req.body.marca,
-        placas: req.body.placas
-    },{
-        returning: true, 
-        where:{codigo: req.params.codigo}
+    models.access.update({
+        where: {
+            codigo: req.params.codigo}
+        }).then((registro) => {
+        res.status(200).json({
+            message: "actualizaadooo"
+        })
     })
 })
-/*
-router.put(‘/book/:bookId’, function (req, res, next) {
-    Book.update(
-      {title: req.body.title},
-      {returning: true, where: {id: req.params.bookId} }
-    )
-    .then(function([ rowsUpdate, [updatedBook] ]) {
-      res.json(updatedBook)
-    })
-    .catch(next)
-   })
-*/
+
 router.post('/maintenance', (req, res) => {
     const maintenance = models.maintenance.build({
         concepto: req.body.concepto,
@@ -162,7 +150,7 @@ router.post('/payments', (req, res) => {
 
 router.get('/all-payments', (req,res) => {
     models.payments.all({
-        attributes: ["id","numero", "concepto", "monto", "nombre", "id_user"]
+        attributes: ["id","folio", "fecha_mant", "calle", "numero", "nombre", "concepto", "monto"]
     }).then((registros) => {
         res.status(200).json({
             registros: registros

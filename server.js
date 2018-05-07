@@ -26,7 +26,7 @@ app.use("/api",routermysql)
 
 sequelize.authenticate()
 .then(() => {
-    console.log("ya jalo")
+    console.log("Postgres funcionando")
 })
 .catch(err => {
     console.log('err')
@@ -35,7 +35,7 @@ sequelize.authenticate()
 
 sequelizeMysql.authenticate()
 .then(() => {
-    console.log('ya jalo x2')
+    console.log('Mysql funcionando')
 })
 .catch((err) => {
     console.log('mysql conn error')

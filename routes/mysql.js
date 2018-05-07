@@ -28,10 +28,28 @@ router.post('/Reservation', (request, response, next) => {
     })
 })
 
+router.delete('/Reservation/:id', (req, res, next) => {
+    Reservation.destroy({
+        where:{
+            id: req.params.id
+        }
+    }).then((model) =>{
+        res.status(200).json({
+            message: "eliminado"
+        })
+    })
+    .catch((error) => {
+        response.status(400).json({
+            message: "error",
+            error: error
+        })
+    })
+})
+
 
 router.get('/all-reservations', (req,res) => {
     Reservation.all({
-        attributes: ["id","titulo", "descripcion", "fecha_inicio", "fecha_fin", "hora_inicio", "hora_fin"]
+        attributes: ["id", "titulo", "descripcion", "fecha_inicio", "fecha_fin", "hora_inicio", "hora_fin"]
     }).then((registros) => {
         res.status(200).json({
             registros: registros
