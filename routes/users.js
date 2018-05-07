@@ -3,7 +3,7 @@ const router = express.Router()
 const passport = require('passport')
 const jwt = require('jsonwebtoken')
 const User = require('../models/users')
-const {ObjectToArray} = require('../utility')
+const utility = require('../utility')
 
 router.post("/register",(request, response, next) => {
     passport.authenticate('local.signup',(err, user, info) => {
@@ -49,7 +49,7 @@ router.get('/all-users', (req,res) => {
     User.find({rol:"propietario"}).select({nombre:1})
     .then((users) => {
         return res.status(200).json({
-            users: users
+            users: utility.ObjectToArray(users)
         })
     })
     

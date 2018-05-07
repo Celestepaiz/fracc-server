@@ -1,7 +1,7 @@
 const express = require('express')
 const router = express.Router()
 const {Reservation} = require('./../models/mysql')
-const {ObjectToArray} = require('../utility')
+const utility = require('../utility')
 
 router.post('/Reservation', (request, response, next) => {
     Reservation.create(request.body)
@@ -23,7 +23,7 @@ router.post('/Reservation', (request, response, next) => {
 router.get('/all-reservations', (req,res) => {
     Reservation.findAll().then((registros) => {
         res.status(200).json({
-            registros: ObjectToArray(registros)
+            registros: utility.ObjectToArray(registros)
         })
     })
     
