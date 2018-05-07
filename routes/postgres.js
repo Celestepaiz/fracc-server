@@ -2,15 +2,6 @@ const express = require('express')
 const router = express.Router()
 const models = require('./../models/postgres')
 
-function ObjectToArray (ObjectArray) {
-    let aux = []    
-    ObjectArray.map((obj) => {
-        // console.log(Object.values(obj))
-        aux.push(Object.values(obj))
-    })
-    return aux    
-}
-
 
 router.post('/access', (req,res) => {
     const access = models.access.build({
@@ -63,15 +54,28 @@ router.delete('/access/:codigo', (req, res) => {
 })
 
 
-router.put('/access/:codigo', (req, res) => {
-    models.access.update({
-        where: {
-            codigo: req.params.codigo}
+router.put('/access', (req, res) => {    
+    models.access.update(
+        {
+            modelo: req.body.modelo,
+            marca: req.body.marca,
+            placas: req.body.placas,
+            codigo: req.body.codigo,
+            id_user: req.body.id_user
+        },
+        {
+            where: {
+                codigo: req.body.codigo
+            }                    
         }).then((registro) => {
-        res.status(200).json({
-            message: "actualizaadooo"
+            res.status(200).json({
+                message: "actualizaadooo"
+            })  
+        }).catch((error) => {
+            res.status(400).json({
+                error: error
+            })
         })
-    })
 })
 
 router.post('/maintenance', (req, res) => {
@@ -90,6 +94,29 @@ router.post('/maintenance', (req, res) => {
 })
 
 
+router.put('/maintenance', (req, res) => {    
+    models.maintenance.update(
+        {
+             concepto: req.body.concepto,
+             monto: req.body.monto, 
+             fecha_limite: req.body.fecha_limite,
+             id_user: req.body.id_user
+        },
+        {
+            where: {
+                id: req.body.id
+            }                    
+        }).then((registro) => {
+            res.status(200).json({
+                message: "actualizaadooo"
+            })  
+        }).catch((error) => {
+            res.status(400).json({
+                error: error
+            })
+        })
+})
+
 router.get('/all-maintenance', (req,res) => {
     models.maintenance.all({
         attributes: ["id","concepto", "monto", "fecha_limite", "id_user"]
@@ -102,10 +129,10 @@ router.get('/all-maintenance', (req,res) => {
 })
 
 
-router.get('/maintenance/:id_user', (req, res) => {
+router.get('/maintenance/:id', (req, res) => {
     models.maintenance.findAll({
         where:{
-            id_user: req.params.id_user
+            id: req.params.id
         }
     }).then((registro) => {
         res.status(200).json({
@@ -147,6 +174,33 @@ router.post('/payments', (req, res) => {
     })
 })
 
+router.put('/payments', (req, res) => {    
+    models.payments.update(
+        {
+            folio: req.body.folio,
+            fecha_mant: req.body.fecha_mant,
+            calle: req.body.calle,
+            numero: req.body.numero,
+            concepto: req.body.concepto,
+            monto: req.body.monto,
+            nombre: req.body.nombre,
+            id_user: req.body.id_user
+            
+        },
+        {
+            where: {
+                folio: req.body.folio
+            }                    
+        }).then((registro) => {
+            res.status(200).json({
+                message: "actualizaadooo"
+            })  
+        }).catch((error) => {
+            res.status(400).json({
+                error: error
+            })
+        })
+})
 
 router.get('/all-payments', (req,res) => {
     models.payments.all({
@@ -160,10 +214,10 @@ router.get('/all-payments', (req,res) => {
 })
 
 
-router.get('/payments/:id_user', (req, res) => {
+router.get('/payments/:folio', (req, res) => {
     models.payments.findAll({
         where:{
-            id_user: req.params.id_user
+            folio: req.params.folio
         }
     }).then((registro) => {
         res.status(200).json({

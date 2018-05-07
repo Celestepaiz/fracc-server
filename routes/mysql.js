@@ -28,6 +28,7 @@ router.post('/Reservation', (request, response, next) => {
     })
 })
 
+
 router.delete('/Reservation/:id', (req, res, next) => {
     Reservation.destroy({
         where:{
