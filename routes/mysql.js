@@ -1,7 +1,16 @@
 const express = require('express')
 const router = express.Router()
 const {Reservation} = require('./../models/mysql')
-const utility = require('../utility')
+
+function ObjectToArray (ObjectArray) {
+    let aux = []    
+    ObjectArray.map((obj) => {
+        // console.log(Object.values(obj))
+        aux.push(Object.values(obj))
+    })
+    return aux    
+}
+
 
 router.post('/Reservation', (request, response, next) => {
     Reservation.create(request.body)
@@ -23,7 +32,7 @@ router.post('/Reservation', (request, response, next) => {
 router.get('/all-reservations', (req,res) => {
     Reservation.findAll().then((registros) => {
         res.status(200).json({
-            registros: utility.ObjectToArray(registros)
+            registros: ObjectToArray(registros)
         })
     })
     

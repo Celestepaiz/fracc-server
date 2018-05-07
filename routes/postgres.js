@@ -1,7 +1,16 @@
 const express = require('express')
 const router = express.Router()
 const models = require('./../models/postgres')
-const utility = require('../utility')
+
+function ObjectToArray (ObjectArray) {
+    let aux = []    
+    ObjectArray.map((obj) => {
+        // console.log(Object.values(obj))
+        aux.push(Object.values(obj))
+    })
+    return aux    
+}
+
 
 router.post('/access', (req,res) => {
     const access = models.access.build({
@@ -22,7 +31,7 @@ router.post('/access', (req,res) => {
 router.get('/all-access', (req,res) => {
     models.access.findAll().then((registros) => {
         res.status(200).json({
-            registros: utility.ObjectToArray(registros)
+            registros: ObjectToArray(registros)
         })
     })
     
@@ -95,7 +104,7 @@ router.post('/maintenance', (req, res) => {
 router.get('/all-maintenance', (req,res) => {
     models.maintenance.findAll().then((registros) => {
         res.status(200).json({
-            registros: utility.ObjectToArray(registros)
+            registros: ObjectToArray(registros)
         })
     })
     
@@ -151,7 +160,7 @@ router.post('/payments', (req, res) => {
 router.get('/all-payments', (req,res) => {
     models.payments.findAll().then((registros) => {
         res.status(200).json({
-            registros: utility.ObjectToArray(registros)
+            registros: ObjectToArray(registros)
         })
     })
     
