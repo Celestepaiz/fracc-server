@@ -29,12 +29,13 @@ router.post('/access', (req,res) => {
 })
 
 router.get('/all-access', (req,res) => {
-    models.access.findAll().then((registros) => {
+    models.access.all({
+        attributes: ["id","modelo", "marca", "placas", "codigo", "id_user"]
+    }).then((registros) => {
         res.status(200).json({
-            registros: ObjectToArray(registros)
+             registros: registros
         })
     })
-    
 })
 
 router.get('/access/:id_user', (req, res) => {
@@ -102,9 +103,11 @@ router.post('/maintenance', (req, res) => {
 
 
 router.get('/all-maintenance', (req,res) => {
-    models.maintenance.findAll().then((registros) => {
+    models.maintenance.all({
+        attributes: ["id","concepto", "monto", "fecha_limite", "id_user"]
+    }).then((registros) => {
         res.status(200).json({
-            registros: ObjectToArray(registros)
+            registros: registros
         })
     })
     
@@ -158,9 +161,11 @@ router.post('/payments', (req, res) => {
 
 
 router.get('/all-payments', (req,res) => {
-    models.payments.findAll().then((registros) => {
+    models.payments.all({
+        attributes: ["id","numero", "concepto", "monto", "nombre", "id_user"]
+    }).then((registros) => {
         res.status(200).json({
-            registros: ObjectToArray(registros)
+            registros: registros
         })
     })
     

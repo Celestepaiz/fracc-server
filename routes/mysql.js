@@ -30,9 +30,11 @@ router.post('/Reservation', (request, response, next) => {
 
 
 router.get('/all-reservations', (req,res) => {
-    Reservation.findAll().then((registros) => {
+    Reservation.all({
+        attributes: ["id","titulo", "descripcion", "fecha_inicio", "fecha_fin", "hora_inicio", "hora_fin"]
+    }).then((registros) => {
         res.status(200).json({
-            registros: ObjectToArray(registros)
+            registros: registros
         })
     })
     

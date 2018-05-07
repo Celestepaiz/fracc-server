@@ -58,7 +58,7 @@ router.get('/all-users', (req,res) => {
     User.find({rol:"propietario"}).select({nombre:1})
     .then((users) => {
         return res.status(200).json({
-            users: ObjectToArray(users)
+            users: users
         })
     })
     

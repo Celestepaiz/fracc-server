@@ -4,5 +4,4 @@ sequelize init
 sequelize db:migrate
 sequelize model:create --name access --attributes 'modelo:integer marca:string(30) placas:string(7) codigo:string(10) id_user:string(24)'
 sequelize model:create --name payments --attributes 'folio:string(7) fecha_mant:date calle:string(30) numero:integer concepto:string monto:numeric(5,2) nombre:string(30) iduser:string(24)'
-
 sequelize model:create --name maintenance --attributes 'concepto:string monto:numeric(5,2) fecha_limite:date id_user:varchar(24)'
