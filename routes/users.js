@@ -55,13 +55,30 @@ router.get('/users', (req,res) => {
 
 
 router.get('/all-users', (req,res) => {
-    User.find({rol:"propietario"}).select({nombre:1})
+    User.find({rol:"propietario"})
     .then((users) => {
         return res.status(200).json({
             users: users
         })
     })
     
+})
+
+router.delete('/delete-user/:_id', (req,res) => {
+    User.findByIdAndRemove(req.params._id)
+        .then(() => {
+            res.status(200).json({
+                message: "ok"
+            })
+        })
+})
+
+router.put('/update-user', (req, res) => {
+    User.findByIdAndUpdate(req.body._id, req.body, {new:true},() => {
+        res.status(200).json({
+            message: "ok"
+        })
+    })
 })
 
 
