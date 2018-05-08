@@ -56,6 +56,7 @@ router.get('/users', (req,res) => {
 
 router.get('/all-users', (req,res) => {
     User.find({rol:"propietario"})
+    .select({_id:1, nombre:1, email:1, calle:1, numero:1})
     .then((users) => {
         return res.status(200).json({
             users: users
@@ -64,7 +65,7 @@ router.get('/all-users', (req,res) => {
     
 })
 
-router.get('/user/:_id', () => {
+router.get('/user/:_id', (req, res) => {
     User.findById(req.params._id)
         .then((user) => {
             return res.status(200).json({
