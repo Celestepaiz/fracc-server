@@ -1,8 +1,8 @@
 {
   "development": {
-    "username": "postgres",
-    "password": "holi123",
-    "database": "fraccpost",
+    "username": "usuario4",
+    "password": "pQjNwwe4pJmDfVHQ",
+    "database": "usuario4",
     "host": "127.0.0.1",
     "dialect": "postgres"
   },
