@@ -64,6 +64,15 @@ router.get('/all-users', (req,res) => {
     
 })
 
+router.get('/user/:_id', () => {
+    User.findById(req.params._id)
+        .then((user) => {
+            return res.status(200).json({
+                user: user
+            })
+        })
+})
+
 router.delete('/delete-user/:_id', (req,res) => {
     User.findByIdAndRemove(req.params._id)
         .then(() => {
@@ -74,7 +83,7 @@ router.delete('/delete-user/:_id', (req,res) => {
 })
 
 router.put('/update-user', (req, res) => {
-    User.findByIdAndUpdate(req.body._id, req.body, {new:true},() => {
+    User.findByIdAndUpdate(req.body._id, req.body, {new:true}).then(() => {
         res.status(200).json({
             message: "ok"
         })
